@@ -101,13 +101,15 @@ int main(int argc, char *argv[])
   double relative_gap = 100* abs(b - mean)/b;
   double sigma_sqrt_m = StdDev * sqrt(m);
 
-   
+  cout << "end of sampling the LP" <<endl; 
 
   if (subsection == "objMagnitude"){  //for the magnitude of the opt objective value table 
       ofstream objFile("objMagnitude.txt", ios::app); 
       objFile<< fixed << setprecision(6);
       objFile<< m <<" & "<< n <<" & "<<b<<" & "<<mean<<" & "<< relative_gap <<" \\\\"<<endl;
       objFile.close();
+      cout << "results have written in objMagnitude.txt file" <<endl;
+
   } else if (subsection == "costAssumption"){ // for assumption on the cost vector table
       double mu_hat_1000_100 = 0.50626; 
       double mu_gap;
@@ -116,6 +118,7 @@ int main(int argc, char *argv[])
       outFile << fixed << setprecision(6);
       outFile<<  k <<" & "<< mean << " & " << mu_gap << "\\\\"  <<endl;
       outFile.close();
+
   } else if (subsection == "objLimitingDistribution"){ //for limiting distribution of objectives 
       ofstream objFile("objLimitingDistribution.txt");
       objFile << fixed << setprecision(6);
@@ -127,6 +130,7 @@ int main(int argc, char *argv[])
       objFile << last_element << endl;
       objFile.close();
       system("python3 ../src/hypothesis_testing.py");
+
   } else if (subsection == "objStdDev"){ // for the Std Dev table 
       ofstream outFile("objStdDev.txt", ios::app); 
       outFile << fixed << setprecision(6);

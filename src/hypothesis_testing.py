@@ -38,6 +38,7 @@ plt.ylabel('Frequency')
 plt.show()
 
 # Plotting ECDF
+objectives.sort()
 ecdf = np.arange(1, len(objectives) + 1) / len(objectives)
 plt.step(objectives, ecdf, where='post')
 plt.xlabel('Optimal objective values')
