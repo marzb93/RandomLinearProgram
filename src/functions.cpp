@@ -19,6 +19,22 @@ void normalizeVector(vector<double>& vec) {
         value /= magnitude;
     }
 }
+double sampleMean(const vector<double>& vec) {
+    double sum = 0.0;
+    for (double value : vec) {
+        sum += value;
+    }
+    return sum / vec.size();
+}
+
+double sampleStdDev(const vector<double>& vec) {
+    double mean = sampleMean(vec);
+    double sum = 0.0;
+    for (double value : vec) {
+        sum += (value - mean) * (value - mean);
+    }
+    return sqrt(sum / (vec.size()-1) );
+}
 vector<double> generate_normal_cost(const int n){
     vector<double> cost(n);
     //const int seed = 123;
@@ -41,6 +57,18 @@ vector<double> generate_Rademacher_cost(const int n){
         cost[i] = u_int_dist(gen);
     }
     normalizeVector(cost);
+    return cost;
+}
+vector<double> generate_compressible_cost(const int n, const int k){
+    vector<double> cost(n);
+  for (int i =0; i<n; i++){
+    if (i<k){
+        cost[i] = static_cast<double>(1/sqrt(k));
+    }
+    else{
+      cost[i] = 0;
+    }
+    }
     return cost;
 }
 vector<vector<double>> generate_normal_A(const int m, const int n){
