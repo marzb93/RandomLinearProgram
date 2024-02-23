@@ -10,9 +10,15 @@ double calculateMagnitude(const vector<double>& vec);
 
 void normalizeVector(vector<double>& vec);
 
+double sampleMean(const vector<double>& vec);
+
+double sampleStdDev(const vector<double>& vec);
+
 vector<double> generate_normal_cost(const int n);
 
 vector<double> generate_Rademacher_cost(const int n);
+
+vector<double> generate_compressible_cost(const int n, const int k);
 
 vector<vector<double>> generate_normal_A(const int m, const int n);
 
