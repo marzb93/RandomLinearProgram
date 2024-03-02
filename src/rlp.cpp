@@ -25,10 +25,10 @@ int main(int argc, char *argv[])
   const int m = stoi(argv[2]); // number of constraints
   const int n = stoi(argv[3]); // number of variables
   const int max_iter = stoi(argv[4]);  // sample size 
-  string type = argv[5]; // distribution of matrix A: normal or pmone or uniform or Bern_Gauss
+  string type = argv[5]; // distribution of matrix A: normal or Rademacher or uniform or Bern_Gauss
 
-  vector <double> c(n); // cost vactor, dynamic array
-  vector<vector<double>> A(m, vector<double>(n)); // matrix of coefficients A, dynamic matrix
+  vector <double> c(n); // cost vactor
+  vector<vector<double>> A(m, vector<double>(n)); // matrix of coefficients A
   
   double obj; // optimal objective value
   vector <double> objectives; // for storing sample optimal objective values
@@ -94,16 +94,14 @@ int main(int argc, char *argv[])
     }
   }
   // for loop ends  ------------------------------------------------------------------------
-
-  double mean = sampleMean(objectives);
-  double StdDev = sampleStdDev(objectives);
-  double b = 1.0/(sqrt(2.0*log(m/n) ));
-  double relative_gap = 100* abs(b - mean)/b;
-  double sigma_sqrt_m = StdDev * sqrt(m);
-
   cout << "end of sampling the LP" <<endl; 
 
+
+
   if (subsection == "objMagnitude"){  //for the magnitude of the opt objective value table 
+      double mean = sampleMean(objectives);
+      double b = 1.0/(sqrt(2.0*log(m/n) ));
+      double relative_gap = 100* abs(b - mean)/b;
       ofstream objFile("objMagnitude.txt", ios::app); 
       objFile<< fixed << setprecision(6);
       objFile<< m <<" & "<< n <<" & "<<b<<" & "<<mean<<" & "<< relative_gap <<" \\\\"<<endl;
@@ -111,6 +109,7 @@ int main(int argc, char *argv[])
       cout << "results have written in objMagnitude.txt file" <<endl;
 
   } else if (subsection == "costAssumption"){ // for assumption on the cost vector table
+      double mean = sampleMean(objectives);
       double mu_hat_1000_100 = 0.50626; 
       double mu_gap;
       mu_gap = 100* abs(mu_hat_1000_100 - mean)/mu_hat_1000_100;
@@ -132,6 +131,9 @@ int main(int argc, char *argv[])
       system("python3 ../src/hypothesis_testing.py");
 
   } else if (subsection == "objStdDev"){ // for the Std Dev table 
+      double StdDev = sampleStdDev(objectives);
+      double sigma_sqrt_m = StdDev * sqrt(m);
+      double b = 1.0/(sqrt(2.0*log(m/n) ));
       ofstream outFile("objStdDev.txt", ios::app); 
       outFile << fixed << setprecision(6);
       outFile<< m <<" & "<< n <<" & "<<b<< " & " << StdDev<<" & "<<sigma_sqrt_m<<" \\\\"  <<endl;
