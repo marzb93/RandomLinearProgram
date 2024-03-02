@@ -47,13 +47,6 @@ public:
     model.setObjective(obj, GRB_MAXIMIZE);
 
   }
-  void feed_feas_sol(vector<double>& feas_sol){
-    int n = feas_sol.size();
-    for (int i=0; i<n; i++){
-        x[i].set(GRB_DoubleAttr_Start, feas_sol[i]);
-        x[i].set(GRB_DoubleAttr_Start, feas_sol[i]);
-    }
-  }
   void cleanup_var_constr(){
     delete [] x;
     delete [] con;
